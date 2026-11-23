@@ -1,0 +1,78 @@
+[project]
+name = "__PROJECT_NAME__"
+version = "__VERSION__"
+authors = [
+    { name = "__FIRST_NAME__ __SURNAME__", email = "__EMAIL__" }
+]
+requires-python = ">=__PYTHON_VERSION__"
+readme = "README.md"
+license = {file = "LICENSE"}
+
+dependencies = [
+    "loguru>=0.7.2",
+    "tomlscript>=0.2.1",
+    "toml>=0.10.2",
+    "markupsafe==2.1.3"
+]
+
+[project.optional-dependencies]
+quality = [
+    "pytest>=6.2.5"
+]
+
+dev = ['__PROJECT_NAME__[quality]']
+prod = ['__PROJECT_NAME__']
+
+[tool.uv]
+index-strategy = 'unsafe-best-match'
+index-url = "https://nexus.framatome.corp/repository/py-pypi/simple/"
+extra-index-url = [
+    "https://nexus.framatome.corp/repository/dpitdatascience/simple/"
+]
+package = true
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://nexus.framatome.corp/repository/py-pypi/simple"
+default = true
+
+[[tool.uv.index]]  
+name = "dpitdatascience"  
+url = "https://nexus.framatome.corp/repository/dpitdatascience/simple"
+publish-url="https://nexus.framatome.corp/repository/dpitdatascience/" # Allow you to run `uv publish --index dpitdatascience`
+
+[[tool.uv.index]]  
+name = "pytorch"  
+url = "https://nexus.framatome.corp/repository/pypi-pytorch/simple"  
+explicit = true
+
+[tool.uv.sources]  
+torch = { index = "pytorch" }  
+torchvision = { index = "pytorch" }
+custom-pg-vector = { index = "dpitdatascience" }
+documents-processor = { index = "dpitdatascience" }
+llms = { index = "dpitdatascience" }
+luthocr = { index = "dpitdatascience" }
+nshotter = { index = "dpitdatascience" }
+prompter = { index = "dpitdatascience" }
+utils = { index = "dpitdatascience" }
+webresearcher = { index = "dpitdatascience" }
+
+[tool.tomlscript]
+launch-app = "uv run python -m src.app"
+
+[tool.basedpyright]
+venvPath = "."
+exclude = ["tests", "notebooks"]
+reportMissingTypeStubs = false
+reportMissingImports = false
+reportMissingModuleSource = false
+reportOptionalCall = false
+typeCheckingMode = "basic"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["__SRC_DIR_PKG__"]

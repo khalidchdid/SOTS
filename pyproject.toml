@@ -1,0 +1,99 @@
+[project]
+name = "SOTS_IMTS"
+version = "0.1.0"
+authors = [
+    { name = "khalid akhmouch ", email = "khalid.akhmouch@framatome.com" }
+]
+requires-python = ">=3.12.7"
+readme = "README.md"
+license = {file = "LICENSE"}
+
+dependencies = [
+    "colorama>=0.4.0",
+    "loguru>=0.7.2",
+    "tomlscript>=0.2.1",
+    "toml>=0.10.2",
+    "markupsafe==2.1.3",
+    "torch>=2.5.1",
+    "numpy>=2.2.6",
+    "pandas>=2.2.3",
+    "scikit-learn>=1.6.1",
+    "tqdm>=4.67.1",
+    "h5py>=3.14.0",
+    "matplotlib>=3.10.3",
+    "seaborn>=0.13.2",
+]
+
+[project.optional-dependencies]
+quality = [
+    "pytest>=6.2.5"
+]
+
+dev = ['SOTS_IMTS[quality]']
+prod = ['SOTS_IMTS']
+
+[tool.uv]
+index-strategy = 'unsafe-best-match'
+index-url = "https://nexus.framatome.corp/repository/py-pypi/simple/"
+extra-index-url = [
+    "https://nexus.framatome.corp/repository/dpitdatascience/simple/"
+]
+package = true
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://nexus.framatome.corp/repository/py-pypi/simple"
+default = true
+
+[[tool.uv.index]]  
+name = "dpitdatascience"  
+url = "https://nexus.framatome.corp/repository/dpitdatascience/simple"
+publish-url="https://nexus.framatome.corp/repository/dpitdatascience/" # Allow you to run `uv publish --index dpitdatascience`
+
+[[tool.uv.index]]  
+name = "pytorch"  
+url = "https://nexus.framatome.corp/repository/pypi-pytorch/simple"  
+explicit = true
+
+[tool.uv.sources]  
+torch = { index = "pytorch" }  
+torchvision = { index = "pytorch" }
+custom-pg-vector = { index = "dpitdatascience" }
+documents-processor = { index = "dpitdatascience" }
+llms = { index = "dpitdatascience" }
+luthocr = { index = "dpitdatascience" }
+nshotter = { index = "dpitdatascience" }
+prompter = { index = "dpitdatascience" }
+utils = { index = "dpitdatascience" }
+webresearcher = { index = "dpitdatascience" }
+
+[tool.tomlscript]
+launch-data_preprocessing = "python -m modules.data_preprocessing.src.main"
+launch-signature = "python -m modules.signatures.src.main"
+launch-wasserstein = "python -m modules.optimal_transport.src.main"
+launch-selection = "python -m modules.coreset_selection.src.main"
+launch-model = "python -m modules.model.src.main"
+launch-main = "python -m main"
+launch-test_signature = "python -m tests.signatures.signature_test"
+launch-test_cs = "python -m tests.coreset_selection.cs_test"
+launch-test_val_dataset = "python -m experiments.code.validation_dataset"
+launch-test_val_samples = "python -m experiments.code.sample_balanced"
+launch-read_db = "python -m modules.utilities.read_db"
+launch-pems04 = "python -m experiments.PEMS04.test"
+
+
+[tool.basedpyright]
+venvPath = "."
+exclude = ["tests", "notebooks"]
+reportMissingTypeStubs = false
+reportMissingImports = false
+reportMissingModuleSource = false
+reportOptionalCall = false
+typeCheckingMode = "basic"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["modules/"]

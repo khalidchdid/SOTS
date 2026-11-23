@@ -1,0 +1,8 @@
+ssl_verify: false
+report_errors: false
+channel_alias: https://nexus.framatome.corp/repository
+channels:
+  - py-conda-forge/
+repodata_fns:
+  - repodata.json
+  - current_repodata.json

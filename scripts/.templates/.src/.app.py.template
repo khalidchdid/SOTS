@@ -1,0 +1,10 @@
+import toml
+from loguru import logger
+
+config_log = toml.load("__LOGS_CONFIG_FILE__")
+logger.add(
+    sink=config_log["logger"]["LOG_FILE"], 
+    rotation=config_log["logger"]["LOG_FILE_ROTATION"]
+)
+
+logger.info("Hello, World !")

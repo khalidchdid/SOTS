@@ -1,0 +1,3 @@
+[logger]
+LOG_FILE = "__LOG_FILE__"
+LOG_FILE_ROTATION = "500 MB"

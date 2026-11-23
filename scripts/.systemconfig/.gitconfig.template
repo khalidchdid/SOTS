@@ -1,0 +1,23 @@
+[http]
+	sslCAInfo = __SSL_CERT_FILE_CA_BUNDLE_CRT__
+	sslbackend = schannel
+	sslVerify = false
+
+[user]
+	name = __FIRST_NAME__ __SURNAME__
+	email = __EMAIL__
+
+[credential "helperselector"]
+	selected = <no helper>
+
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+
+[sequence]
+	editor = code --wait --reuse-window
+
+[credential "http://proxysg.fdom.ad.corp:3128"]
+	provider = generic

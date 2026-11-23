@@ -1,0 +1,52 @@
+# https://pre-commit.com/
+
+exclude: ^(.*\/.vscode|.*\/tests/files/.*.tsv|.*\/tests/files/.*.csv|.*\/tests/files/.*.txt|.*\/tests/files/.*.json)
+repos:
+  # GENERAL
+  - repo: https://gitlab.framatome.corp/dpit-data-science/forks/pre-commit-hooks.git
+    rev: v3.2.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      
+  - repo: https://gitlab.framatome.corp/dpit-data-science/forks/pre-commit-hooks.git
+    rev: v3.2.0
+    hooks:
+      - id: check-byte-order-marker
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: detect-private-key
+      - id: trailing-whitespace
+
+  - repo: https://gitlab.framatome.corp/dpit-data-science/forks/pre-commit-hooks.git
+    rev: v3.2.0
+    hooks:
+      - id: check-json
+      - id: pretty-format-json
+        args: [--autofix, --no-ensure-ascii]
+
+  # PYTHON
+  - repo: https://gitlab.framatome.corp/dpit-data-science/forks/uv-pre-commit.git
+    # uv version.
+    rev: 0.4.28
+    hooks:
+      # Run the pip compile
+      - id: pip-compile
+        args: [requirements.in, -o, requirements.txt]
+
+  - repo: https://gitlab.framatome.corp/dpit-data-science/forks/ruff-pre-commit.git
+    # Ruff version.
+    rev: v0.7.1
+    hooks:
+      # Run the linter.
+      - id: ruff
+        types_or: [ python, pyi ]
+        args: [ --fix ] # Automatically fix issues
+      # Run the formatter.
+      - id: ruff-format
+        types_or: [ python, pyi ]
+        
+  - repo: https://gitlab.framatome.corp/dpit-data-science/forks/basedpyright-pre-commit-mirror.git
+    rev: v1.13.0  # or whatever the latest version is at the time
+    hooks:
+    - id: basedpyright
